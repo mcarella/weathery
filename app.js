@@ -7,12 +7,11 @@ var Ajax = require('ajax');
 
 
 /* Declaring vars */
-
+var tmpstring = '';
 var BOX_ONE_WIDTH = 144;
 var BOX_TWO_WIDTH = 144;
 var BOX_ONE_HEIGHT = 112;
 var BOX_TWO_HEIGHT = 56;
-var SHOW_DEGREES = true;
 var API_URL = 'http://api.openweathermap.org/data/2.5/weather?';
 
 var GEO_OPTS = {
@@ -40,7 +39,7 @@ var uiTimeString = new UI.TimeText({
   size: new Vector2(BOX_ONE_WIDTH, 30),
   text: "%H:%M",
   font: 'bitham-42-bold',
-  color: 'darkCandyAppleRed',
+  color: 'black',
   textAlign: 'center'
 });
 
@@ -49,7 +48,7 @@ var uiDayString = new UI.TimeText({
   size: new Vector2(BOX_ONE_WIDTH, 30),
   text: "%a %d %b",
   font: 'gothic-24-bold',
-  color: 'darkCandyAppleRed',
+  color: 'black',
   textAlign: 'center'
 });
 
@@ -67,7 +66,7 @@ var uiWeatherString = new UI.TimeText({
   size: new Vector2(BOX_ONE_WIDTH, 30),
   text: "",
   font: 'gothic-24-bold',
-  color: 'darkCandyAppleRed',
+  color: 'black',
   textAlign: 'center'
 });
 
@@ -79,14 +78,9 @@ function getMeteo(){
         type: 'json'
       },
       function(json) {
-        if(SHOW_DEGREES){
-          uiWeatherString.text(json.main.temp+"°");
-          SHOW_DEGREES = false;
-        } else {
-          uiWeatherString.text(json.weather[0].description);
-          SHOW_DEGREES = true;
-        }
-        
+        tmpstring = json.main.temp+"";
+        tmpstring = tmpstring.split(".");
+        uiWeatherString.text(tmpstring[0]+"° "+json.weather[0].main);
       },
       function(error) {
         uiWeatherString.text("???");
